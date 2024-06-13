@@ -1,6 +1,8 @@
-import 'Subcategory.dart';
-import 'Category.dart';
-import 'Brand.dart';
+import 'package:ecommerceapp/Data/models/brands_response/BrandsModel.dart';
+import 'package:ecommerceapp/Data/models/categorie_response/CategorieModel.dart';
+import 'package:ecommerceapp/Data/models/product_response/SubcategoryModel.dart';
+import 'package:ecommerceapp/Domain/entities/ProductEntity.dart';
+
 
 /// sold : 4814
 /// images : ["https://ecommerce.routemisr.com/Route-Academy-products/1680403397482-1.jpeg","https://ecommerce.routemisr.com/Route-Academy-products/1680403397482-2.jpeg","https://ecommerce.routemisr.com/Route-Academy-products/1680403397483-3.jpeg","https://ecommerce.routemisr.com/Route-Academy-products/1680403397485-4.jpeg"]
@@ -20,53 +22,56 @@ import 'Brand.dart';
 /// updatedAt : "2024-05-03T19:05:22.100Z"
 /// id : "6428ebc6dc1175abc65ca0b9"
 
-class Data {
-  Data({
-      this.sold, 
-      this.images, 
-      this.subcategory, 
-      this.ratingsQuantity, 
-      this.id, 
-      this.title, 
-      this.slug, 
-      this.description, 
-      this.quantity, 
-      this.price, 
-      this.imageCover, 
-      this.category, 
-      this.brand, 
-      this.ratingsAverage, 
-      this.createdAt, 
-      this.updatedAt, 
-      this.id,});
+class ProductModel {
+  ProductModel({
+    this.sold,
+    this.images,
+    this.subcategory,
+    this.ratingsQuantity,
+    this.id,
+    this.title,
+    this.slug,
+    this.description,
+    this.quantity,
+    this.price,
+    this.priceAfterDiscount,
+    this.imageCover,
+    this.category,
+    this.brand,
+    this.ratingsAverage,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-  Data.fromJson(dynamic json) {
+  ProductModel.fromJson(dynamic json) {
     sold = json['sold'];
     images = json['images'] != null ? json['images'].cast<String>() : [];
     if (json['subcategory'] != null) {
       subcategory = [];
       json['subcategory'].forEach((v) {
-        subcategory?.add(Subcategory.fromJson(v));
+        subcategory?.add(SubcategoryModel.fromJson(v));
       });
     }
     ratingsQuantity = json['ratingsQuantity'];
-    id = json['_id'];
+    id = json['id'];
     title = json['title'];
     slug = json['slug'];
     description = json['description'];
     quantity = json['quantity'];
     price = json['price'];
+    priceAfterDiscount = json['priceAfterDiscount'];
     imageCover = json['imageCover'];
-    category = json['category'] != null ? Category.fromJson(json['category']) : null;
-    brand = json['brand'] != null ? Brand.fromJson(json['brand']) : null;
+    category = json['category'] != null
+        ? CategorieModel.fromJson(json['category'])
+        : null;
+    brand = json['brand'] != null ? BrandsModel.fromJson(json['brand']) : null;
     ratingsAverage = json['ratingsAverage'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    id = json['id'];
   }
   int? sold;
   List<String>? images;
-  List<Subcategory>? subcategory;
+  List<SubcategoryModel>? subcategory;
   int? ratingsQuantity;
   String? id;
   String? title;
@@ -74,13 +79,13 @@ class Data {
   String? description;
   int? quantity;
   int? price;
+  int? priceAfterDiscount;
   String? imageCover;
-  Category? category;
-  Brand? brand;
-  double? ratingsAverage;
+  CategorieModel? category;
+  BrandsModel? brand;
+  num? ratingsAverage;
   String? createdAt;
   String? updatedAt;
-  String? id;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -90,12 +95,13 @@ class Data {
       map['subcategory'] = subcategory?.map((v) => v.toJson()).toList();
     }
     map['ratingsQuantity'] = ratingsQuantity;
-    map['_id'] = id;
+    map['id'] = id;
     map['title'] = title;
     map['slug'] = slug;
     map['description'] = description;
     map['quantity'] = quantity;
     map['price'] = price;
+    map['priceAfterDiscount'] = priceAfterDiscount;
     map['imageCover'] = imageCover;
     if (category != null) {
       map['category'] = category?.toJson();
@@ -106,8 +112,28 @@ class Data {
     map['ratingsAverage'] = ratingsAverage;
     map['createdAt'] = createdAt;
     map['updatedAt'] = updatedAt;
-    map['id'] = id;
     return map;
   }
 
+  ProductEntity toProductEntity() {
+    return ProductEntity(
+      brand: brand?.toBrandsEntity(),
+      category: category?.toCategorieEntity(),
+      description: description,
+      id: id,
+      imageCover: imageCover,
+      price: price,
+      priceAfterDiscount: priceAfterDiscount,
+      images: images,
+      quantity: quantity,
+      ratingsAverage: ratingsAverage,
+      ratingsQuantity: ratingsQuantity,
+      slug: slug,
+      sold: sold,
+      subcategory: subcategory
+          ?.map((subcategory) => subcategory.toSubcategoryEntity())
+          .toList(),
+      title: title,
+    );
+  }
 }

@@ -1,3 +1,5 @@
+import 'package:ecommerceapp/Domain/entities/SubcategoryEntity.dart';
+
 /// _id : "6407f1bcb575d3b90bf95797"
 /// name : "Women's Clothing"
 /// slug : "women's-clothing"
@@ -5,10 +7,11 @@
 
 class SubcategoryModel {
   SubcategoryModel({
-      this.id, 
-      this.name, 
-      this.slug, 
-      this.category,});
+    this.id,
+    this.name,
+    this.slug,
+    this.category,
+  });
 
   SubcategoryModel.fromJson(dynamic json) {
     id = json['_id'];
@@ -30,4 +33,12 @@ class SubcategoryModel {
     return map;
   }
 
+  SubcategoryEntity toSubcategoryEntity() {
+    return SubcategoryEntity(
+      category: category,
+      id: id,
+      name: name,
+      slug: slug,
+    );
+  }
 }

@@ -1,5 +1,6 @@
-import 'Metadata.dart';
-import 'Data.dart';
+import 'package:ecommerceapp/Data/models/Metadata.dart';
+
+import 'productModel.dart';
 
 /// results : 56
 /// metadata : {"currentPage":1,"numberOfPages":2,"limit":40,"nextPage":2}
@@ -17,13 +18,13 @@ class ProductResponse {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data?.add(Data.fromJson(v));
+        data?.add(ProductModel.fromJson(v));
       });
     }
   }
   int? results;
   Metadata? metadata;
-  List<Data>? data;
+  List<ProductModel>? data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

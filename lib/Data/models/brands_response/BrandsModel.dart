@@ -1,20 +1,16 @@
-/// _id : "64089fe824b25627a25315d1"
-/// name : "Canon"
-/// slug : "canon"
-/// image : "https://ecommerce.routemisr.com/Route-Academy-brands/1678286824747.png"
-/// createdAt : "2023-03-08T14:47:04.912Z"
-/// updatedAt : "2023-03-08T14:47:04.912Z"
+import 'package:ecommerceapp/Domain/entities/BrandsEntity.dart';
 
-class Data {
-  Data({
-      this.id, 
-      this.name, 
-      this.slug, 
-      this.image, 
-      this.createdAt, 
-      this.updatedAt,});
+class BrandsModel {
+  BrandsModel({
+    this.id,
+    this.name,
+    this.slug,
+    this.image,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-  Data.fromJson(dynamic json) {
+  BrandsModel.fromJson(dynamic json) {
     id = json['_id'];
     name = json['name'];
     slug = json['slug'];
@@ -40,4 +36,7 @@ class Data {
     return map;
   }
 
+  BrandsEntity toBrandsEntity() {
+    return BrandsEntity(id: id, image: image, name: name, slug: slug);
+  }
 }
